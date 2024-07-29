@@ -19,13 +19,10 @@ steps:
 - script: |
     # Configure Databricks CLI
     echo "Configuring Databricks CLI"
-    databricks configure --token <<EOF
-    $(DATABRICKS_HOST)
-    $(DATABRICKS_TOKEN)
-    EOF
+    databricks configure --token '$databricksToken' --host '$workspaceUrl'
   env:
-    DATABRICKS_HOST: $(DATABRICKS_HOST)
-    DATABRICKS_TOKEN: $(DATABRICKS_TOKEN)
+    databricksToken: $(DATABRICKS_TOKEN)
+    workspaceUrl: $(DATABRICKS_HOST)
   displayName: 'Configure Databricks CLI'
 
 - script: |
