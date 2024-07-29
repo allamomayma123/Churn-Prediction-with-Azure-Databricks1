@@ -19,6 +19,7 @@ steps:
 
 - script: |
     source venv/bin/activate
+    pip install distutils
     python preprocess.py
   displayName: 'Run preprocessing script'
 
