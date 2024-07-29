@@ -1,0 +1,8 @@
+{
+  "run_name": "Train Model",
+  "existing_cluster_id": "0723-084144-1yim17rl",
+  "libraries": [],
+  "spark_python_task": {
+    "python_file": "dbfs:/FileStore/train.py"
+  }
+}

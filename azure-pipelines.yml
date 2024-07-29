@@ -9,26 +9,22 @@ steps:
   inputs:
     versionSpec: '3.x'
     addToPath: true
+  displayName: 'Setup Python'
+
 - script: |
-    sudo apt-get update
-    sudo apt-get install -y python3-distutils
-    python -m venv venv
-    source venv/bin/activate
+    python -m pip install --upgrade pip
     pip install -r requirements.txt
-  displayName: 'Set up virtual environment and install dependencies'
+  displayName: 'Install dependencies'
 
 - script: |
-    source venv/bin/activate
-    pip install distutils
-    python preprocess.py
-  displayName: 'Run preprocessing script'
-
-- script: |
-    python train.py
-  displayName: 'Train Model'
+    # Submit jobs
+    databricks jobs run-now --job-id 209754261247957 --notebook-params '{"input_path": "dbfs:/FileStore/tables/hr_employee_churn_data.csv", "output_path": "dbfs:/processed_hr_employee_churn_data.csv"}'
+    databricks jobs run-now --job-id 538543884377785 --notebook-params '{"input_path": "dbfs:/processed_hr_employee_churn_data.csv"}'
+  displayName: 'Run Databricks scripts'
 
 - task: PublishTestResults@2
   inputs:
     testResultsFormat: 'JUnit'
     testResultsFiles: '**/TEST-*.xml'
     failTaskOnFailedTests: true
+  displayName: 'Publish Test Results'
