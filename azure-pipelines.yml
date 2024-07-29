@@ -19,16 +19,18 @@ steps:
 - script: |
     # Configure Databricks CLI
     echo "Configuring Databricks CLI"
-    echo $(DATABRICKS_HOST)
-    echo $(DATABRICKS_TOKEN)
     databricks configure --token <<EOF
     $(DATABRICKS_HOST)
     $(DATABRICKS_TOKEN)
     EOF
+  env:
+    DATABRICKS_HOST: $(DATABRICKS_HOST)
+    DATABRICKS_TOKEN: $(DATABRICKS_TOKEN)
+  displayName: 'Configure Databricks CLI'
 
-    # Submit jobs
-    databricks jobs run-now --job-id 209754261247957 --notebook-params '{"input_path": "dbfs:/FileStore/tables/hr_employee_churn_data.csv", "output_path": "dbfs:/processed_hr_employee_churn_data.csv"}'
-    databricks jobs run-now --job-id 538543884377785 --notebook-params '{"input_path": "dbfs:/processed_hr_employee_churn_data.csv"}'
+- script: |
+    databricks jobs run-now --job-id <209754261247957> --notebook-params '{"input_path": "dbfs:/FileStore/tables/hr_employee_churn_data.csv", "output_path": "/processed_hr_employee_churn_data.csv"}'
+    databricks jobs run-now --job-id <538543884377785> --notebook-params '{"input_path": "/processed_hr_employee_churn_data.csv"}'
   displayName: 'Run Databricks scripts'
 
 - task: PublishTestResults@2
